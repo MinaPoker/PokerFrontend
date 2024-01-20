@@ -7,6 +7,9 @@ import Link from 'next/link'
 import { createClient } from "@supabase/supabase-js";
 import { checkAddress } from '@/util/databaseFunctions'
 import CreateProfilePopUp from '@/components/create-profile'
+// import { useWalletAddress } from '@/hooks/useGameData'
+import { atom, useAtom } from 'jotai'
+import { walletAddressAtom } from "@/util/state";
 
 
 const Home = () => {
@@ -16,7 +19,7 @@ const Home = () => {
 
   const [walletConnected, setWalletConnected] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [accounts, setAccounts] = useState(null);
+  const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
   const [profile, setProfile] = useState(false);
 
   const dealerRef = useRef(null);
@@ -24,8 +27,8 @@ const Home = () => {
   const connectWallet = async () => {
     try {
       const collectAccounts = await window.mina.requestAccounts()
-      setAccounts(collectAccounts);
-      console.log(collectAccounts)
+      console.log("collectAccounts", collectAccounts[0])
+      setWalletAddress(collectAccounts[0]);
       if (collectAccounts) {
         setWalletConnected(true)
         console.log("check address", checkAddress(collectAccounts))
@@ -40,7 +43,16 @@ const Home = () => {
 
     } catch (error) {
       console.log(error.message, error.code)
+      // create a alert for frontend mina wallet
+      if (!window.mina) {
+        alert('Please install Mina AuroWallet first!')
+      }
+
     }
+  }
+
+  const handlePopupClose = () => {
+    setProfile(true)
   }
 
   return (
@@ -70,10 +82,10 @@ const Home = () => {
           <StyledButton roundedStyle='rounded-full' className='absolute bg-[#ff9000] bottom-4 text-2xl left-1/2 -translate-x-1/2' onClick={connectWallet}>Connect Wallet</StyledButton>
         </div>
 
-        {accounts &&
+        {walletAddress &&
           <div>
             <span className='text-white mt-2 text-lg shadow-lg   '>
-              Address: {accounts}
+              Address: {walletAddress}
             </span>
             {/* profile */}
             <div>
@@ -82,7 +94,7 @@ const Home = () => {
                   <Link href='/create'>
                     <StyledButton className='bg-[#00b69a] bottom-4 text-2xl  m-8 ml-[105px] left-3/5 -translate-x-1/2'>Create Profile </StyledButton>
                   </Link>
-                  <CreateProfilePopUp />
+                  <CreateProfilePopUp onClose={handlePopupClose} />
                 </div>
 
               }

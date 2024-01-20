@@ -5,6 +5,12 @@ export default function FrameBox({
   title, // Title of the FrameBox
   onClose, // Function to be called when the close button is clicked
 }) {
+  const handleCloseClick = () => {
+    if (onClose) { 
+        onClose();
+    }
+};
+
   return (
     <div className='fixed top-0 left-0 w-screen h-screen bg-black/50 z-50 flex justify-center items-center'>
       {/* Overlay that covers the entire screen with a semi-transparent background */}
@@ -30,7 +36,7 @@ export default function FrameBox({
         {showClose && (
           <div 
             className='absolute -right-7 -top-7 w-14 h-14 cursor-pointer bg-no-repeat bg-center bg-[url("/close-icon.png")]'
-            onClick={onClose}
+            onClick={handleCloseClick}
             // Close button with custom icon, positioned outside the top-right corner of the FrameBox
           ></div>
         )}

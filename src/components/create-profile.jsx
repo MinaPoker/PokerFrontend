@@ -8,6 +8,8 @@ import { addPlayerData } from '@/util/databaseFunctions'
 import { FaStarOfLife } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { AiOutlineUser } from "react-icons/ai";
+import { atom, useAtom } from 'jotai'
+import { walletAddressAtom } from "@/util/state";
 
 
 // ShareLink component - used for sharing a match link
@@ -15,10 +17,12 @@ export default function CreateProfilePopUp({ onClose, link }) {
   const router = useRouter()
   const [url, setUrl] = useState(null)
   const [copyed, setCopyed] = useState(false)
+  const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
+  const userType = "player"
 
   const [formData, setFormData] = useState({
     name: "",
-    userName: "",
+    social: "",
     inviteCode: "",
   });
 
@@ -35,9 +39,9 @@ export default function CreateProfilePopUp({ onClose, link }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addPlayerData(walletAddress[0], userType, formData)
-    // router.push("/dashboard");
-    // alert(`Name: ${formData.name}\nCompany: ${formData.company}\nWebsite: ${formData.website}\nTwitter: ${formData.twitter}\nGitHub: ${formData.github}\nInvite: ${formData.invite}`);
+    console.log("form data", formData)
+    addPlayerData(walletAddress, userType, formData)
+    router.push("/create");
   };
 
   // Main return method that renders the share link UI
@@ -52,7 +56,7 @@ export default function CreateProfilePopUp({ onClose, link }) {
         <p>Welcome To MinaPoker</p>
         <form onSubmit={handleSubmit}>
           <div className="relative pb-3">
-            <div className="text-black px-2 md:px-0 flex">Full Name {<FaStarOfLife size={6} className="text-red-600 mt-1 mx-2" />}
+            <div className="text-black px-2 md:px-0 flex">Your Name {<FaStarOfLife size={6} className="text-red-600 mt-1 mx-2" />}
             </div>
             <div className="mt-3 ">
               <span className="absolute inset-y-0 top-5 right-0 flex items-center pr-4">
@@ -72,7 +76,7 @@ export default function CreateProfilePopUp({ onClose, link }) {
           </div>
 
           <div className="relative pb-3">
-          <div className="text-black px-2 md:px-0 flex">Username {<FaStarOfLife size={6} className="text-red-600 mt-1 mx-2" />}
+            <div className="text-black px-2 md:px-0 flex">Your Social Profile {<FaStarOfLife size={6} className="text-red-600 mt-1 mx-2" />}
             </div>
             <div className="mt-3 text-black">
               <span className="absolute inset-y-0 top-5 right-0 flex items-center pr-4">
@@ -80,10 +84,10 @@ export default function CreateProfilePopUp({ onClose, link }) {
               </span>
               <input
                 type="text"
-                id="userName"
-                name="userName"
-                value={formData.userName}
-                placeholder="Your Username"
+                id="social"
+                name="social"
+                value={formData.social}
+                placeholder="Share your X profile link"
                 onChange={handleChange}
                 required
                 className="peer px-6 py-2 border flex gap-6 border-slate-200  bg-white w-full rounded-[20px] text-slate-700 dark:text-slate-600 hover:border-slate-200 hover:shadow transition duration-150"
@@ -96,25 +100,25 @@ export default function CreateProfilePopUp({ onClose, link }) {
           <div className=" h-[0px] border my-3 border-neutral-300"></div>
 
           <div className="relative pb-3 rounded">
-            <div className="text-black px-2 md:px-0 flex">Invite {<FaStarOfLife size={6} className="text-red-600 mt-1 mx-2" />}
+            <div className="text-black px-2 md:px-0 flex">Invite Code
             </div>
             <div className="mt-3 ">
 
               <input
                 type="text"
-                id="invite"
-                name="invite"
-                value={formData.invite}
-                placeholder="12345"
+                id="inviteCode"
+                name="inviteCode"
+                value={formData.inviteCode}
+                placeholder="mina12345"
                 onChange={handleChange}
-                required
                 className="peer px-6 py-2 border flex gap-6 border-slate-200  bg-white w-full rounded-[20px] text-slate-700 dark:text-slate-600 hover:border-slate-200 hover:shadow transition duration-150"
               />
+              
             </div>
           </div>
 
           <div className="flex align-middle justify-center items-center">
-          <StyledButton type="submit" className='bg-[#ff9000] m-2' roundedStyle='rounded-full'>
+            <StyledButton type="submit" className='bg-[#ff9000] m-2' roundedStyle='rounded-full'>
               <div className='text-2xl text-black' >LET'S GO</div>
             </StyledButton>
           </div>

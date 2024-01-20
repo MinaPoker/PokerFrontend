@@ -35,11 +35,13 @@ export const addPlayerData = async (address, userType, formData) => {
             .from('user_data')
             .insert([
                 {
-                    walletId: address,
-                    userType: userType,
+                    address: address,
                     name: formData.name,
-                    social: formData.twitter,
+                    social: formData.social,
+                    inviteCode: formData.inviteCode,
+                    walletBalance: 0,
                     status: "true",
+                    userType: userType,
                 },
             ])
             .select()

@@ -21,6 +21,7 @@ import { useGameData } from '@/hooks/useGameData';
 
 export default function GameRoom({ gameId }) {
   const [userInfo, setUserInfo] = useLocalStorageState('userinfo')
+  console.log("user info",userInfo)
   const { gameData } = useGameData();
   console.log("gameData on room:", gameData);
 
