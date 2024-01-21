@@ -13,18 +13,21 @@ import aleoFetcher from '@/fetcher/aleo'
 import { encodeBs58 } from '@/util'
 import ShareLink from '@/components/share-link'
 import { useGameData } from '@/hooks/useGameData'
+import createPokerGame from '@/util/databaseFunctions'
+import { generateUniquePokerId } from '@/util'
 
 
 export default function CreateGamePage() {
 
     const router = useRouter()
     const { gameData, setGameData } = useGameData();
+    const newId = generateUniquePokerId();
 
     const [minimum, setMinimum] = useState(2)
     const [lowBetChips, setLowBetChips] = useState(2)
     const [topBetChips, setTopBetChips] = useState(20)
     const [totalRounds, setTotalRounds] = useState(2)
-    const [gameId, setGameId] = useState('abcd1234')
+    const [gameId, setGameId] = useState(newId)
 
     const [handleSubmitState, setHandleSubmitState] = useState(false)
     const [coLoading, setCoLoading] = useState(false);
@@ -32,14 +35,13 @@ export default function CreateGamePage() {
     const handleCreateGame = async () => {
         setCoLoading(true);
         console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId);
-
         // setGameData(newGameData);
         setGameData({
+            gameId: gameId,
             size: minimum,
             lowBetChips: lowBetChips,
             topBetChips: topBetChips,
             totalRounds: totalRounds,
-            gameId: 'abcd1234',
         });
 
         // Simulate a delay (e.g., 1 second) to mimic an API call.

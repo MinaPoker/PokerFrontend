@@ -58,14 +58,14 @@ export const addPlayerData = async (address, userType, formData) => {
 }
 
 
-export const createPokerGame = async (address, userType, formData) => {
+export const createPokerGame = async (address, formData) => {
     try {
         const { data, error } = await supabase
             .from('create_game')
             .insert([
                 {
                     creatorWallet: address,
-                    noOfPlayers: formData.noOfPlayers,
+                    noOfPlayers: formData.size,
                     lowBetChips: formData.lowBetChips,
                     highBetChips: formData.highBetChips,
                     totalRounds: formData.totalRounds,

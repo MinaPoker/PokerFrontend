@@ -1,5 +1,5 @@
 import bs58 from 'bs58';
-
+import { v4 as uuidv4 } from 'uuid';
 const BASE58_CHAR_MAP = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 
 export const encodeBs58 = (str) => {
@@ -57,4 +57,9 @@ export const optionSeparator = "-&&&&&-";
 
 export function displayAddress(address = '') {
   return address?.slice(0, 4) + '...' + address?.slice(-8);
+}
+
+export function generateUniquePokerId() {
+  const uuid = uuidv4(); 
+  return 'poker' + uuid.slice(5); // Concatenate "poker" and a slice of the UUID
 }
