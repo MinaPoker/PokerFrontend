@@ -10,6 +10,7 @@ import CreateProfilePopUp from '@/components/create-profile'
 // import { useWalletAddress } from '@/hooks/useGameData'
 import { atom, useAtom } from 'jotai'
 import { walletAddressAtom } from "@/util/state";
+import { toast } from 'react-toastify';
 
 
 const Home = () => {
@@ -29,8 +30,12 @@ const Home = () => {
       const collectAccounts = await window.mina.requestAccounts()
       console.log("collectAccounts", collectAccounts[0])
       setWalletAddress(collectAccounts[0]);
-      if (collectAccounts) {
+      if (collectAccounts[0]) {
         setWalletConnected(true)
+        toast.success('Wallet Connected', {
+          position: "top-right", 
+          autoClose: 3000, 
+        });
         console.log("check address", checkAddress(collectAccounts))
         checkAddress(collectAccounts).then((res) => {
           console.log("res:", res);
@@ -50,6 +55,14 @@ const Home = () => {
 
     }
   }
+
+  const checkToasify = () => {
+    toast.success('Wallet Connected', {
+      position: "top-right", 
+      autoClose: 3000, 
+    });
+  }
+
 
   const handlePopupClose = () => {
     setProfile(true)
@@ -105,6 +118,8 @@ const Home = () => {
               <Link href='/create'>
                 <StyledButton className='bg-[#00b69a] bottom-4 text-2xl  m-8 ml-[105px] left-3/5 -translate-x-1/2'>Create Table </StyledButton>
               </Link>
+              <StyledButton roundedStyle='rounded-full' className='absolute bg-[#ff9000] bottom-4 text-2xl left-1/2 -translate-x-1/2' onClick={checkToasify}> Toaster</StyledButton>
+
             </div>
 
           </div>
