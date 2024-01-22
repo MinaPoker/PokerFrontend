@@ -13,9 +13,10 @@ import aleoFetcher from '@/fetcher/aleo'
 import { encodeBs58 } from '@/util'
 import ShareLink from '@/components/share-link'
 import { useGameData } from '@/hooks/useGameData'
-import createPokerGame from '@/util/databaseFunctions'
+import { createPokerGame } from '@/util/databaseFunctions'
 import { generateUniquePokerId } from '@/util'
-
+import { atom, useAtom } from 'jotai'
+import { walletAddressAtom } from "@/util/state";
 
 export default function CreateGamePage() {
 
@@ -28,6 +29,7 @@ export default function CreateGamePage() {
     const [topBetChips, setTopBetChips] = useState(20)
     const [totalRounds, setTotalRounds] = useState(2)
     const [gameId, setGameId] = useState(newId)
+    const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
 
     const [handleSubmitState, setHandleSubmitState] = useState(false)
     const [coLoading, setCoLoading] = useState(false);
@@ -47,7 +49,12 @@ export default function CreateGamePage() {
         // Simulate a delay (e.g., 1 second) to mimic an API call.
         setTimeout(() => {
             setCoLoading(false);
-            setHandleSubmitState(true);
+            if (walletAddress) {
+                setHandleSubmitState(true);
+                createPokerGame(walletAddress, gameData);
+            }
+            
+
             console.log('Create a game on-chain (simulated)');
         }, 2000);
     };
@@ -137,7 +144,7 @@ export default function CreateGamePage() {
                             <div className='w-40 h-40 bg-no-repeat bg-center bg-[url("/loading-icon-fg.png")] animate-[spin_1.6s_linear_infinite]'></div>
                         </div>
                         <p className='text-2xl font-black my-8'>Data cochain ...</p>
-                        <p>It is expected to take 4-5 minutes,</p>
+                        <p>It is expected to take 10 seconds,</p>
                         <p>please be patient!</p>
                         <StyledButton className='bg-[#ff9000] m-8' roundedStyle='rounded-full' onClick={() => { setCoLoading(false) }}>
                             <div className='text-2xl'>CANCEL</div>
