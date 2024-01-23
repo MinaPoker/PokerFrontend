@@ -65,6 +65,5 @@ export function generateUniquePokerId() {
   const timestamp = Date.now().toString();
   const randomChars = Math.random().toString(36).substr(2, 5);
   const gameId = 'poker' + timestamp.slice(-10) + randomChars;
-  console.log("generateUniquePokerId", gameId);
   return gameId;
 }

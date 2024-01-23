@@ -17,25 +17,27 @@ import { createPokerGame } from '@/util/databaseFunctions'
 import { generateUniquePokerId } from '@/util'
 import { atom, useAtom } from 'jotai'
 import { walletAddressAtom } from "@/util/state";
+import { toast } from 'react-toastify'
 
 export default function CreateGamePage() {
 
     const router = useRouter()
     const { gameData, setGameData } = useGameData();
-    const newId = generateUniquePokerId();
 
     const [minimum, setMinimum] = useState(2)
     const [lowBetChips, setLowBetChips] = useState(2)
     const [topBetChips, setTopBetChips] = useState(20)
     const [totalRounds, setTotalRounds] = useState(2)
-    const [gameId, setGameId] = useState(newId)
+    const [gameId, setGameId] = useState(null)
     const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
 
     const [handleSubmitState, setHandleSubmitState] = useState(false)
     const [coLoading, setCoLoading] = useState(false);
 
     const handleCreateGame = async () => {
+        const newId = generateUniquePokerId();
         setCoLoading(true);
+        setGameId(newId)
         console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId);
         // setGameData(newGameData);
         setGameData({
@@ -53,7 +55,12 @@ export default function CreateGamePage() {
                 setHandleSubmitState(true);
                 createPokerGame(walletAddress, gameData);
             }
-            
+            else {
+                toast.error('Wallet is not connected', { 
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
 
             console.log('Create a game on-chain (simulated)');
         }, 2000);
