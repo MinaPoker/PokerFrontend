@@ -94,6 +94,8 @@ const Home = () => {
           <img src='/login-button-bg.png' />
           <StyledButton roundedStyle='rounded-full' className='absolute bg-[#ff9000] bottom-4 text-2xl left-1/2 -translate-x-1/2' onClick={connectWallet}>Connect Wallet</StyledButton>
         </div>
+        <StyledButton roundedStyle='rounded-full' className='absolute bg-[#ff9000] bottom-4 text-2xl left-1/2 -translate-x-1/2' onClick={checkToasify}> Toaster</StyledButton>
+
 
         {walletAddress &&
           <div>
@@ -109,7 +111,6 @@ const Home = () => {
                   </Link>
                   <CreateProfilePopUp onClose={handlePopupClose} />
                 </div>
-
               }
 
 
@@ -118,10 +119,7 @@ const Home = () => {
               <Link href='/create'>
                 <StyledButton className='bg-[#00b69a] bottom-4 text-2xl  m-8 ml-[105px] left-3/5 -translate-x-1/2'>Create Table </StyledButton>
               </Link>
-              <StyledButton roundedStyle='rounded-full' className='absolute bg-[#ff9000] bottom-4 text-2xl left-1/2 -translate-x-1/2' onClick={checkToasify}> Toaster</StyledButton>
-
             </div>
-
           </div>
         }
 
