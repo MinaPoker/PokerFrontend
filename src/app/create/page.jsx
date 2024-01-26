@@ -16,19 +16,60 @@ import { useGameData } from '@/hooks/useGameData'
 import { createPokerGame } from '@/util/databaseFunctions'
 import { generateUniquePokerId } from '@/util'
 import { atom, useAtom } from 'jotai'
-import { walletAddressAtom } from "@/util/state";
+import { walletAddressAtom, gameIdAtom } from "@/util/state";
 import { toast } from 'react-toastify'
+import { io } from "socket.io-client";
+
 
 export default function CreateGamePage() {
 
     const router = useRouter()
     const { gameData, setGameData } = useGameData();
+    const socketRef = useRef();
+
+    // useEffect(() => {
+    //     // Connect to the Socket.IO server
+    //     socketRef.current = io('http://localhost:3000/api/socket', { path: "/api/socketio" });
+    //     console.log("socketRef.current working", socketRef.current)
+    //     // Event listener for receiving invites
+    //     socketRef.current.on('invitePlayer', (data) => {
+    //         console.log('Received game invite:', data);
+    //         // Handle invitation logic (display, accept, reject, etc.)
+    //     });
+
+    //     return () => socketRef.current.disconnect();
+    // }, []);
+
+    // const socket = io({ path: "/api/socketio" });
+
+    // socket.on("connect", () => {
+    //     console.log("Connected to the server");
+    // });
+
+    useEffect(() => {
+        const socket = io('http://localhost:5005', { path: '/api/socketio' });
+
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
+    // Function to send an invite
+    const sendInvite = (playerBId, gameId) => {
+        console.log("socketRef.current", playerBId, gameId)
+        socketRef.current.emit('invitePlayer', { playerBId, gameId });
+    };
+
 
     const [minimum, setMinimum] = useState(2)
     const [lowBetChips, setLowBetChips] = useState(2)
     const [topBetChips, setTopBetChips] = useState(20)
     const [totalRounds, setTotalRounds] = useState(2)
-    const [gameId, setGameId] = useState(null)
+    const [gameId, setGameId] = useAtom(gameIdAtom)
     const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
 
     const [handleSubmitState, setHandleSubmitState] = useState(false)
@@ -36,12 +77,15 @@ export default function CreateGamePage() {
 
     const handleCreateGame = async () => {
         const newId = generateUniquePokerId();
+        console.log("newId", newId)
         setCoLoading(true);
         setGameId(newId)
-        console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId);
+        console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId, newId);
         // setGameData(newGameData);
+        // sendInvite('as34512532', newId)
+
         setGameData({
-            gameId: gameId,
+            gameId: newId,
             size: minimum,
             lowBetChips: lowBetChips,
             topBetChips: topBetChips,
@@ -56,7 +100,7 @@ export default function CreateGamePage() {
                 createPokerGame(walletAddress, gameData);
             }
             else {
-                toast.error('Wallet is not connected', { 
+                toast.error('Wallet is not connected', {
                     position: "top-right",
                     autoClose: 3000,
                 });

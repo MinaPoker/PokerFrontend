@@ -11,6 +11,7 @@ import CreateProfilePopUp from '@/components/create-profile'
 import { atom, useAtom } from 'jotai'
 import { walletAddressAtom } from "@/util/state";
 import { toast } from 'react-toastify';
+import io from 'socket.io-client';
 
 
 const Home = () => {
@@ -24,6 +25,18 @@ const Home = () => {
   const [profile, setProfile] = useState(false);
 
   const dealerRef = useRef(null);
+
+  // const socketRef = useRef();
+  // useEffect(() => {
+  //   socketRef.current = io('http://localhost:3003/api/socket'); // Match your server's address
+
+  //   socketRef.current.on('update', (data) => {
+  //     console.log('Socket.io Received update:', data);
+  //     // Update your component's state with the received data
+  //   });
+
+  //   return () => socketRef.current.disconnect();
+  // }, []); 
 
   const connectWallet = async () => {
     try {
