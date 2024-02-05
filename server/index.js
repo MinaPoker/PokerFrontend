@@ -1,8 +1,18 @@
-const { createServer } = require('http');
-const { Server } = require('socket.io');
+// const { createServer } = require('http');
+// const { Server } = require('socket.io');
 
-const httpServer = createServer();
-const io = new Server(httpServer, { path: '/api/socketio' });
+// const httpServer = createServer();
+// const io = new Server(httpServer, { path: '/api/socketio' });
+const { Server } = require("socket.io");
+const httpServer = require("http").createServer();
+
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:3000", // or your Next.js app URL
+        methods: ["GET", "POST"],
+    },
+});
+
 
 io.on('connection', (socket) => {
     console.log('A user connected', socket.id);
@@ -14,8 +24,17 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on("message", (data) => {
+        console.log(data);
+        socket.broadcast.emit("message", data);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("user disconnected");
+    });
+
     // ... other socket event handlers ...
 });
 
-const PORT = process.env.PORT ||  5005;
+const PORT = process.env.PORT || 5005;
 httpServer.listen(PORT, () => console.log(`Socket.IO server running on port http://localhost:${PORT}`));

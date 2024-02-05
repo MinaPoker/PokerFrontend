@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node index.js",
+    "dev": "nodemon index.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^3.1.0",
     "socket.io": "^4.7.4"
   }
 }

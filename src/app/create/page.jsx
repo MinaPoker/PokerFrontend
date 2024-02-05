@@ -18,14 +18,18 @@ import { generateUniquePokerId } from '@/util'
 import { atom, useAtom } from 'jotai'
 import { walletAddressAtom, gameIdAtom } from "@/util/state";
 import { toast } from 'react-toastify'
-import { io } from "socket.io-client";
-
+// import { io } from "socket.io-client";
+import socket from '@/util/socket'
 
 export default function CreateGamePage() {
 
     const router = useRouter()
     const { gameData, setGameData } = useGameData();
     const socketRef = useRef();
+
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
+
 
     // useEffect(() => {
     //     // Connect to the Socket.IO server
@@ -47,16 +51,23 @@ export default function CreateGamePage() {
     // });
 
     useEffect(() => {
-        const socket = io('http://localhost:5005', { path: '/api/socketio' });
 
-        socket.on('connect', () => {
-            console.log('Connected to the server');
+        socket.on("message", (data) => {
+            setMessages((prevMessages) => [...prevMessages, data]);
         });
 
         return () => {
-            socket.disconnect();
+            socket.off("message");
         };
+
     }, []);
+
+    const sendMessage = () => {
+        if (message.trim()) {
+            socket.emit("message", message);
+            setMessage("");
+        }
+    };
 
     // Function to send an invite
     const sendInvite = (playerBId, gameId) => {
@@ -124,6 +135,20 @@ export default function CreateGamePage() {
                     <div className='text-white font-black text-right'>
                         Choose the settings for you new match.<br />
                         The power in your hands.
+                    </div>
+
+                    <div>
+                        <input
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            placeholder="Type your message..."
+                        />
+                        <button onClick={sendMessage}>Send</button>
+                        <ul>
+                            {messages.map((msg, index) => (
+                                <li key={index}>{msg}</li>
+                            ))}
+                        </ul>
                     </div>
 
                     <div className='text-right'>
