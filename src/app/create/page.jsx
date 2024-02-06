@@ -42,7 +42,7 @@ export default function CreateGamePage() {
     //     });
 
     //     return () => socketRef.current.disconnect();
-    // }, []);
+    // }, []); Research rollup bitcoin
 
     // const socket = io({ path: "/api/socketio" });
 
