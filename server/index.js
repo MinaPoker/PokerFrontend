@@ -1,7 +1,19 @@
 const { Server } = require("socket.io");
 const httpServer = require("http").createServer();
+import { generateUniquePokerId } from '../src/util/index'
 
 const tournaments = new Map();
+
+// Example tournament data structure
+// const tournamentData = {
+//     id: 'tournament123',
+//     players: [
+//       { id: 'player1', name: 'John Doe' },
+//       { id: 'player2', name: 'Jane Smith' },
+//     ],
+//     gameState: {
+//     }
+//   };
 
 const io = new Server(httpServer, {
     cors: {
@@ -15,6 +27,24 @@ const gameSessions = {}; // Store session data
 io.on('connection', (socket) => {
     console.log('user connected', socket.id);
 
+    socket.on('createTournament', (playerData) => {
+        const tournamentId = generateUniquePokerId(); // Generate a unique tournament ID
+        const invitationChannel = `tournament-invitation-${tournamentId}`;
+
+        // Create a new tournament object and store it in the tournaments map
+        const tournament = {
+            id: tournamentId,
+            players: [{ id: socket.id, ...playerData }],
+            gameState: {},
+            invitationChannel
+        };
+        tournaments.set(tournamentId, tournament);
+
+        // Join the invitation channel
+        socket.join(invitationChannel);
+    });
+
+    // for invited players
     socket.on('joinTournament', (tournamentId, playerData) => {
         // Get the tournament data or create a new one if it doesn't exist
         let tournament = tournaments.get(tournamentId) || {
@@ -40,12 +70,11 @@ io.on('connection', (socket) => {
         // );
 
         const tournament = tournaments.get(tournamentId);
-        
+
         if (tournament) {
             // Remove the player from the tournament
             tournament.players = tournament.players.filter(p => p.id !== socket.id);
 
-            // Update the tournament data
             tournaments.set(tournament.id, tournament);
 
             // Broadcast the updated player list to other players in the same tournament
@@ -61,8 +90,6 @@ io.on('connection', (socket) => {
         socket.emit('sessionCreated', sessionId);
     });
 
-
-
     socket.on('invitePlayer', (data) => {
         io.to(data.playerBId).emit('invitePlayer', {
             gameId: data.gameId,
@@ -75,11 +102,6 @@ io.on('connection', (socket) => {
         socket.broadcast.emit("message", data);
     });
 
-    socket.on("disconnect", () => {
-        console.log("user disconnected");
-    });
-
-    // ... other socket event handlers ...
 });
 
 const PORT = process.env.PORT || 5005;
