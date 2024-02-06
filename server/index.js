@@ -34,6 +34,25 @@ io.on('connection', (socket) => {
         socket.join(tournamentId);
     });
 
+    socket.on('disconnect', (tournamentId) => {
+        // const tournament = Array.from(tournaments.values()).find(t =>
+        //     t.players.some(p => p.id === socket.id)
+        // );
+
+        const tournament = tournaments.get(tournamentId);
+        
+        if (tournament) {
+            // Remove the player from the tournament
+            tournament.players = tournament.players.filter(p => p.id !== socket.id);
+
+            // Update the tournament data
+            tournaments.set(tournament.id, tournament);
+
+            // Broadcast the updated player list to other players in the same tournament
+            socket.broadcast.to(tournament.id).emit('playerLeft', socket.id);
+        }
+    });
+
     socket.on('createSession', async (userId) => {
         const sessionId = generateUniqueSessionId();
         gameSessions[sessionId] = { players: [userId], /* Other session data */ };
