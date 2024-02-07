@@ -61,6 +61,29 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('tournamentInvitation', ({ tournamentId, invitedBy, invitationChannel }) => {
+        // Display the invitation to the user (UI) & Get the user's response (accept or decline) - pending
+
+        socket.join(invitationChannel);
+
+        // Respond to the invitation
+        if (response === 'accept') {
+            socket.to(invitationChannel).emit('invitationResponse', {
+                tournamentId,
+                invitedBy,
+                invitee: socket.id,
+                accepted: true
+            });
+        } else {
+            socket.to(invitationChannel).emit('invitationResponse', {
+                tournamentId,
+                invitedBy,
+                invitee: socket.id,
+                accepted: false
+            });
+        }
+    });
+
     // for invited players
     socket.on('joinTournament', (tournamentId, playerData) => {
         // Get the tournament data or create a new one if it doesn't exist
