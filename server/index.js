@@ -27,6 +27,7 @@ const gameSessions = {}; // Store session data
 io.on('connection', (socket) => {
     console.log('user connected', socket.id);
 
+    // when new tournament started
     socket.on('createTournament', (playerData) => {
         const tournamentId = generateUniquePokerId(); // Generate a unique tournament ID
         const invitationChannel = `tournament-invitation-${tournamentId}`;
@@ -42,6 +43,22 @@ io.on('connection', (socket) => {
 
         // Join the invitation channel
         socket.join(invitationChannel);
+    });
+
+    // send invitation to players
+    socket.on('invitePlayers', (tournamentId, invitedPlayers) => {
+        const tournament = tournaments.get(tournamentId);
+        if (tournament) {
+            const invitationChannel = tournament.invitationChannel;
+
+            invitedPlayers.forEach(invitedPlayer => {
+                io.to(invitedPlayer.id).emit('tournamentInvitation', {
+                    tournamentId,
+                    invitedBy: socket.id,
+                    invitationChannel
+                });
+            });
+        }
     });
 
     // for invited players
@@ -82,13 +99,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('createSession', async (userId) => {
-        const sessionId = generateUniqueSessionId();
-        gameSessions[sessionId] = { players: [userId], /* Other session data */ };
 
-        socket.join(sessionId); // Join the socket room
-        socket.emit('sessionCreated', sessionId);
-    });
 
     socket.on('invitePlayer', (data) => {
         io.to(data.playerBId).emit('invitePlayer', {
