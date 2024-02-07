@@ -61,6 +61,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle invitation responses
     socket.on('tournamentInvitation', ({ tournamentId, invitedBy, invitationChannel }) => {
         // Display the invitation to the user (UI) & Get the user's response (accept or decline) - pending
 
@@ -81,6 +82,24 @@ io.on('connection', (socket) => {
                 invitee: socket.id,
                 accepted: false
             });
+        }
+    });
+
+    // Host Player invitation response 
+    socket.on('invitationResponse', ({ tournamentId, invitedBy, invitee, accepted }) => {
+        const tournament = tournaments.get(tournamentId);
+        if (tournament && tournament.players.some(p => p.id === invitedBy)) {
+            if (accepted) {
+                // Add the invitee to the tournament's player list
+                tournament.players.push({ id: invitee });
+                tournaments.set(tournamentId, tournament);
+
+                // Broadcast the updated player list to the tournament participants
+                io.to(tournamentId).emit('playerJoined', { id: invitee });
+            } else {
+                // Handle the case when the invitation is declined
+                // (e.g., display a message to the tournament host)
+            }
         }
     });
 
