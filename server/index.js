@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Host Player invitation response 
+    // Host Player response on invitation  
     socket.on('invitationResponse', ({ tournamentId, invitedBy, invitee, accepted }) => {
         const tournament = tournaments.get(tournamentId);
         if (tournament && tournament.players.some(p => p.id === invitedBy)) {
@@ -94,12 +94,26 @@ io.on('connection', (socket) => {
                 tournament.players.push({ id: invitee });
                 tournaments.set(tournamentId, tournament);
 
-                // Broadcast the updated player list to the tournament participants
                 io.to(tournamentId).emit('playerJoined', { id: invitee });
             } else {
-                // Handle the case when the invitation is declined
-                // (e.g., display a message to the tournament host)
+                // Remove the declined invitee from the tournament's player list
+                tournament.players = tournament.players.filter(p => p.id !== invitee);
+                tournaments.set(tournamentId, tournament);
+
+                io.to(tournamentId).emit('playerLeft', { id: invitee });
             }
+        }
+    });
+
+    // when all players joined
+    socket.on('startTournament', (tournamentId) => {
+        const tournament = tournaments.get(tournamentId);
+        if (tournament && tournament.players.length >= minimumPlayersRequired) {
+            // Start the tournament - Broadcast the start event to all tournament participants
+            io.to(tournamentId).emit('tournamentStarted', tournament.gameState);
+
+            // Leave the invitation channel
+            socket.leave(tournament.invitationChannel);
         }
     });
 
