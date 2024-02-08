@@ -28,7 +28,7 @@ export default function ShareLink({ onClose, link }) {
         <h4 className='text-3xl font-black'>Match created!</h4>
         <p>Instructions for sharing the match.</p>
         <p><img className='icon' src='/share-link-icon.png' /></p>
-        <p>Information about the match accessibility.</p>
+        <p>Information about the match accessibility for players.</p>
         <p className='text-[#fff000] cursor-pointer'>
           {/* Copy to clipboard functionality for the match URL */}
           <CopyToClipboard text={url}

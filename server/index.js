@@ -3,8 +3,6 @@ const httpServer = require("http").createServer();
 import { generateUniquePokerId } from '../src/util/index'
 
 const tournaments = new Map();
-
-// Example tournament data structure
 // const tournamentData = {
 //     id: 'tournament123',
 //     players: [
@@ -29,31 +27,31 @@ io.on('connection', (socket) => {
 
     // when new tournament started
     socket.on('createTournament', (playerData) => {
-        const tournamentId = generateUniquePokerId(); // Generate a unique tournament ID
-        const invitationChannel = `tournament-invitation-${tournamentId}`;
+        const gameId = generateUniquePokerId(); // Generate a unique tournament ID
+        const invitationChannel = `tournament-invitation-${gameId}`;
 
         // Create a new tournament object and store it in the tournaments map
         const tournament = {
-            id: tournamentId,
+            id: gameId,
             players: [{ id: socket.id, ...playerData }],
             gameState: {},
             invitationChannel
         };
-        tournaments.set(tournamentId, tournament);
+        tournaments.set(gameId, tournament);
 
         // Join the invitation channel
         socket.join(invitationChannel);
     });
 
     // send invitation to players
-    socket.on('invitePlayers', (tournamentId, invitedPlayers) => {
-        const tournament = tournaments.get(tournamentId);
+    socket.on('invitePlayers', (gameId, invitedPlayers) => {
+        const tournament = tournaments.get(gameId);
         if (tournament) {
             const invitationChannel = tournament.invitationChannel;
 
             invitedPlayers.forEach(invitedPlayer => {
                 io.to(invitedPlayer.id).emit('tournamentInvitation', {
-                    tournamentId,
+                    gameId,
                     invitedBy: socket.id,
                     invitationChannel
                 });
@@ -62,7 +60,7 @@ io.on('connection', (socket) => {
     });
 
     // Handle invitation responses
-    socket.on('tournamentInvitation', ({ tournamentId, invitedBy, invitationChannel }) => {
+    socket.on('tournamentInvitation', ({ gameId, invitedBy, invitationChannel }) => {
         // Display the invitation to the user (UI) & Get the user's response (accept or decline) - pending
 
         socket.join(invitationChannel);
@@ -70,14 +68,14 @@ io.on('connection', (socket) => {
         // Respond to the invitation
         if (response === 'accept') {
             socket.to(invitationChannel).emit('invitationResponse', {
-                tournamentId,
+                gameId,
                 invitedBy,
                 invitee: socket.id,
                 accepted: true
             });
         } else {
             socket.to(invitationChannel).emit('invitationResponse', {
-                tournamentId,
+                gameId,
                 invitedBy,
                 invitee: socket.id,
                 accepted: false
@@ -86,31 +84,31 @@ io.on('connection', (socket) => {
     });
 
     // Host Player response on invitation  
-    socket.on('invitationResponse', ({ tournamentId, invitedBy, invitee, accepted }) => {
-        const tournament = tournaments.get(tournamentId);
+    socket.on('invitationResponse', ({ gameId, invitedBy, invitee, accepted }) => {
+        const tournament = tournaments.get(gameId);
         if (tournament && tournament.players.some(p => p.id === invitedBy)) {
             if (accepted) {
                 // Add the invitee to the tournament's player list
                 tournament.players.push({ id: invitee });
-                tournaments.set(tournamentId, tournament);
+                tournaments.set(gameId, tournament);
 
-                io.to(tournamentId).emit('playerJoined', { id: invitee });
+                io.to(gameId).emit('playerJoined', { id: invitee });
             } else {
                 // Remove the declined invitee from the tournament's player list
                 tournament.players = tournament.players.filter(p => p.id !== invitee);
-                tournaments.set(tournamentId, tournament);
+                tournaments.set(gameId, tournament);
 
-                io.to(tournamentId).emit('playerLeft', { id: invitee });
+                io.to(gameId).emit('playerLeft', { id: invitee });
             }
         }
     });
 
     // when all players joined
-    socket.on('startTournament', (tournamentId) => {
-        const tournament = tournaments.get(tournamentId);
+    socket.on('startTournament', (gameId) => {
+        const tournament = tournaments.get(gameId);
         if (tournament && tournament.players.length >= minimumPlayersRequired) {
             // Start the tournament - Broadcast the start event to all tournament participants
-            io.to(tournamentId).emit('tournamentStarted', tournament.gameState);
+            io.to(gameId).emit('tournamentStarted', tournament.gameState);
 
             // Leave the invitation channel
             socket.leave(tournament.invitationChannel);
@@ -118,31 +116,31 @@ io.on('connection', (socket) => {
     });
 
     // for invited players
-    socket.on('joinTournament', (tournamentId, playerData) => {
+    socket.on('joinTournament', (gameId, playerData) => {
         // Get the tournament data or create a new one if it doesn't exist
-        let tournament = tournaments.get(tournamentId) || {
-            id: tournamentId,
+        let tournament = tournaments.get(gameId) || {
+            id: gameId,
             players: [],
             gameState: {}
         };
 
         tournament.players.push({ id: socket.id, ...playerData });
 
-        tournaments.set(tournamentId, tournament);
+        tournaments.set(gameId, tournament);
 
         // Broadcast the updated player list to other players in the same tournament
-        socket.broadcast.to(tournamentId).emit('playerJoined', playerData);
+        socket.broadcast.to(gameId).emit('playerJoined', playerData);
 
         // Join the tournament room
-        socket.join(tournamentId);
+        socket.join(gameId);
     });
 
-    socket.on('disconnect', (tournamentId) => {
+    socket.on('disconnect', (gameId) => {
         // const tournament = Array.from(tournaments.values()).find(t =>
         //     t.players.some(p => p.id === socket.id)
         // );
 
-        const tournament = tournaments.get(tournamentId);
+        const tournament = tournaments.get(gameId);
 
         if (tournament) {
             // Remove the player from the tournament

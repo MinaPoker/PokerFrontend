@@ -22,45 +22,37 @@ import { toast } from 'react-toastify'
 import socket from '@/util/socket'
 
 export default function CreateGamePage() {
-
     const router = useRouter()
-    const { gameData, setGameData } = useGameData();
     const socketRef = useRef();
+    const { gameData, setGameData } = useGameData();
 
-    const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState([]);
+    const [minimum, setMinimum] = useState(2)
+    const [lowBetChips, setLowBetChips] = useState(2)
+    const [topBetChips, setTopBetChips] = useState(20)
+    const [totalRounds, setTotalRounds] = useState(2)
+    const [gameId, setGameId] = useAtom(gameIdAtom)
+    const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
+
+    const [playerData, setPlayerData] = useState({});
+    const [invitedPlayers, setInvitedPlayers] = useState([]);
 
 
-    // useEffect(() => {
-    //     // Connect to the Socket.IO server
-    //     socketRef.current = io('http://localhost:3000/api/socket', { path: "/api/socketio" });
-    //     console.log("socketRef.current working", socketRef.current)
-    //     // Event listener for receiving invites
-    //     socketRef.current.on('invitePlayer', (data) => {
-    //         console.log('Received game invite:', data);
-    //         // Handle invitation logic (display, accept, reject, etc.)
-    //     });
-
-    //     return () => socketRef.current.disconnect();
-    // }, []); Research rollup bitcoin
-
-    // const socket = io({ path: "/api/socketio" });
-
-    // socket.on("connect", () => {
-    //     console.log("Connected to the server");
-    // });
+    const [handleSubmitState, setHandleSubmitState] = useState(false)
+    const [coLoading, setCoLoading] = useState(false);
 
     useEffect(() => {
-
-        socket.on("message", (data) => {
-            setMessages((prevMessages) => [...prevMessages, data]);
-        });
+        socket.on('tournamentCreated', handleTournamentCreated);
 
         return () => {
-            socket.off("message");
+            socket.off('tournamentCreated', handleTournamentCreated);
         };
 
     }, []);
+
+    const handleTournamentCreated = (tournamentData) => {
+        setTournamentId(tournamentData.id);
+        setPlayerData(tournamentData.players[0]);
+    };
 
     const sendMessage = () => {
         if (message.trim()) {
@@ -74,17 +66,6 @@ export default function CreateGamePage() {
         console.log("socketRef.current", playerBId, gameId)
         socketRef.current.emit('invitePlayer', { playerBId, gameId });
     };
-
-
-    const [minimum, setMinimum] = useState(2)
-    const [lowBetChips, setLowBetChips] = useState(2)
-    const [topBetChips, setTopBetChips] = useState(20)
-    const [totalRounds, setTotalRounds] = useState(2)
-    const [gameId, setGameId] = useAtom(gameIdAtom)
-    const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
-
-    const [handleSubmitState, setHandleSubmitState] = useState(false)
-    const [coLoading, setCoLoading] = useState(false);
 
     const handleCreateGame = async () => {
         const newId = generateUniquePokerId();
