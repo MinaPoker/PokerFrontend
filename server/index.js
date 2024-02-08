@@ -1,6 +1,5 @@
 const { Server } = require("socket.io");
 const httpServer = require("http").createServer();
-import { generateUniquePokerId } from '../src/util/index'
 
 const tournaments = new Map();
 // const tournamentData = {
@@ -25,21 +24,25 @@ io.on('connection', (socket) => {
     console.log('user connected', socket.id);
 
     // when new tournament started
-    socket.on('createTournament', (playerData) => {
-        const gameId = generateUniquePokerId(); // Generate a unique tournament ID
+    socket.on('createTournament', (gameId, playerData) => {
         const invitationChannel = `tournament-invitation-${gameId}`;
+        const joinLink = `http://localhost:3000/game?gameId=${gameId}`;
+
 
         // Create a new tournament object and store it in the tournaments map
         const tournament = {
             id: gameId,
             players: [{ id: socket.id, ...playerData }],
             gameState: {},
-            invitationChannel
+            invitationChannel,
+            joinLink
         };
         tournaments.set(gameId, tournament);
 
         // Join the invitation channel
         socket.join(invitationChannel);
+        socket.emit({ ...tournament, joinLink });
+
     });
 
     // send invitation to players

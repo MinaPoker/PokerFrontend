@@ -50,13 +50,14 @@ export default function CreateGamePage() {
     }, []);
 
     const handleTournamentCreated = (tournamentData) => {
+        console.log('Tournament data received from server:', tournamentData);
         setTournamentId(tournamentData.id);
         setPlayerData(tournamentData.players[0]);
     };
 
-    const createTournament = (walletAddress) => {
-        const playerData = {walletAddress} ;
-        socket.emit('createTournament', playerData);
+    const createTournament = (id, walletAddress) => {
+        const playerData = { walletAddress };
+        socket.emit('createTournament', id, playerData);
     };
 
     const invitePlayers = (invitedPlayers) => {
@@ -86,6 +87,7 @@ export default function CreateGamePage() {
         console.log("newId", newId)
         setCoLoading(true);
         setGameId(newId)
+        createTournament(newId, walletAddress);
         console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId, newId);
         // setGameData(newGameData);
         // sendInvite('as34512532', newId)
@@ -130,20 +132,6 @@ export default function CreateGamePage() {
                     <div className='text-white font-black text-right'>
                         Choose the settings for you new match.<br />
                         The power in your hands.
-                    </div>
-
-                    <div>
-                        <input
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Type your message..."
-                        />
-                        <button onClick={sendMessage}>Send</button>
-                        <ul>
-                            {messages.map((msg, index) => (
-                                <li key={index}>{msg}</li>
-                            ))}
-                        </ul>
                     </div>
 
                     <div className='text-right'>
