@@ -54,6 +54,20 @@ export default function CreateGamePage() {
         setPlayerData(tournamentData.players[0]);
     };
 
+    const createTournament = (walletAddress) => {
+        const playerData = {walletAddress} ;
+        socket.emit('createTournament', playerData);
+    };
+
+    const invitePlayers = (invitedPlayers) => {
+        if (gameId) {
+            socket.emit('invitePlayers', gameId, invitedPlayers);
+            setInvitedPlayers(invitedPlayers);
+        } else {
+            console.error('Cannot invite players before creating a tournament');
+        }
+    };
+
     const sendMessage = () => {
         if (message.trim()) {
             socket.emit("message", message);

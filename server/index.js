@@ -4,10 +4,9 @@ import { generateUniquePokerId } from '../src/util/index'
 
 const tournaments = new Map();
 // const tournamentData = {
-//     id: 'tournament123',
+//     id: 'gameId',
 //     players: [
-//       { id: 'player1', name: 'John Doe' },
-//       { id: 'player2', name: 'Jane Smith' },
+//       { id: 'address', name: 'John Doe' },
 //     ],
 //     gameState: {
 //     }
