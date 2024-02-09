@@ -24,9 +24,7 @@ import { walletAddressAtom,gameIdAtom } from "@/util/state";
 export default function GameRoom({ gameId }) {
   const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
   const [id, setId] = useAtom(gameIdAtom);
-  console.log("id", id)
   const [userInfo, setUserInfo] = useLocalStorageState('userinfo')
-  console.log("user info",userInfo)
   const { gameData } = useGameData();
   console.log("gameData on room:", gameData);
 
@@ -194,6 +192,46 @@ export default function GameRoom({ gameId }) {
       stateFetcher('local:gameMessages', [...(gameMessages ?? []), state.message]).then(gameMessagesMutate)
     }
   }, [gameServer.data])
+
+  useEffect(() => {
+    // Set up Socket.IO event listeners
+    socket.on('playerJoined', handlePlayerJoined);
+    socket.on('playerLeft', handlePlayerLeft);
+    socket.on('tournamentStarted', handleTournamentStarted);
+
+    return () => {
+      socket.off('playerJoined', handlePlayerJoined);
+      socket.off('playerLeft', handlePlayerLeft);
+      socket.off('tournamentStarted', handleTournamentStarted);
+    };
+  }, []);
+
+  const handleTournamentInvitation = ({ tournamentId, invitedBy, invitationChannel }) => {
+    // Display the invitation to the user UI - Get the user's response (accept or decline)
+    const response = window.confirm(`You have been invited to join tournament ${tournamentId} by ${invitedBy}. Do you want to accept?`);
+
+    // Join the invitation channel
+    socket.emit('joinTournament', tournamentId, playerData);
+
+    // Respond to the invitation
+    if (response) {
+      setInvitationResponse('accept');
+      socket.emit('invitationResponse', {
+        tournamentId,
+        invitedBy,
+        invitee: socket.id,
+        accepted: true
+      });
+    } else {
+      setInvitationResponse('decline');
+      socket.emit('invitationResponse', {
+        tournamentId,
+        invitedBy,
+        invitee: socket.id,
+        accepted: false
+      });
+    }
+  };
 
   return (
     <>
