@@ -233,6 +233,19 @@ export default function GameRoom({ gameId }) {
     }
   };
 
+  const handlePlayerJoined = (playerData) => {
+    setPlayers((prevPlayers) => [...prevPlayers, playerData]);
+  };
+
+  const handlePlayerLeft = (playerId) => {
+    setPlayers((prevPlayers) => prevPlayers.filter((player) => player.id !== playerId));
+  };
+
+  const handleTournamentStarted = (gameState) => {
+    setGameStarted(true);
+  };
+
+
   return (
     <>
       <div className='hidden scale-[0.975]'></div>
