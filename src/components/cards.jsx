@@ -1,18 +1,15 @@
 import classNames from 'classnames';
 
-// Initialize an object to store JSX elements for each card
 const cardSet = {};
 
-// Loop over each suit and card value to create card elements
 for (const [suitIndex, suit] of ['spade', 'heart', 'club', 'diamond'].entries()) {
   for (const [index, value] of '2,3,4,5,6,7,8,9,10,J,Q,K,A'.split(',').entries()) {
-    // Assign a div element for each card with a unique background position
     cardSet[`${suit} ${value}`] = <div
       className='bg-no-repeat bg-[url("/poker_1280.png")]'
       style={{
         width: 96, height: 136,
-        backgroundPositionX: -46 - (108 * index), // Calculate X position based on card value
-        backgroundPositionY: -46 - (148 * suitIndex), // Calculate Y position based on card suit
+        backgroundPositionX: -46 - (108 * index), 
+        backgroundPositionY: -46 - (148 * suitIndex), 
       }}
     />
   }

@@ -44,8 +44,8 @@ export default function CreateProfilePopUp({ onClose, link }) {
   return (
     <FrameBox
       title={<div className='bg-no-repeat bg-top h-[96px] -translate-y-1/2'></div>}
-      onClose={onClose} // onClose prop for closing the component
-      showClose={true} // Option to hide the close button
+      onClose={onClose} 
+      showClose={true} 
     >
       <div className='w-[560px] m-10 text-center text-white'>
         <h4 className='text-3xl font-black'>Create Your Profile</h4>
@@ -80,8 +80,8 @@ export default function CreateProfilePopUp({ onClose, link }) {
               </span>
               <input
                 type="text"
-                id="website"
-                name="website"
+                id="userName" 
+                name="userName"
                 value={formData.userName}
                 placeholder="Your Username"
                 onChange={handleChange}
@@ -90,8 +90,6 @@ export default function CreateProfilePopUp({ onClose, link }) {
               />
             </div>
           </div>
-
-
 
           <div className=" h-[0px] border my-3 border-neutral-300"></div>
 

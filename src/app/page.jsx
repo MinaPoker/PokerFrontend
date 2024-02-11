@@ -86,10 +86,6 @@ const Home = () => {
                 </div>
 
               }
-
-
-
-
               <Link href='/create'>
                 <StyledButton className='bg-[#00b69a] bottom-4 text-2xl  m-8 ml-[105px] left-3/5 -translate-x-1/2'>Create Table </StyledButton>
               </Link>

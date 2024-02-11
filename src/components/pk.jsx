@@ -35,7 +35,7 @@ export default function PK() {
         gamePK?.userId ? 'pointer-events-auto' : 'pointer-events-none'
       )}
     >
-      {/* Player 0 */}
+
       <div className='transition-transform duration-300 delay-200 -translate-x-full group-[.opacity-100]:translate-x-0 absolute top-0 left-0 w-full h-full bg-no-repeat bg-[url("/pk.png")] flex items-center justify-start'>
         <div className='flex relative left-48 top-2'>
           <div className='relative top-4 left-10'>
@@ -83,7 +83,7 @@ export default function PK() {
         </div>
       </div>
 
-      {/* Animation Element */}
+
       <div
         className='relative transition-[opacity,transform] delay-500 opacity-0 scale-[10] group-[.opacity-100]:opacity-100 group-[.opacity-100]:scale-100 w-52 h-52 bg-no-repeat bg-[url("/pk.png")]'
         style={{ backgroundPositionY: -1440 }}

@@ -1,10 +1,8 @@
-// Importing necessary libraries and components
 import useSWR from 'swr'
 import aleoFetcher from '@/fetcher/aleo'
 import { useEffect, useState } from 'react'
 import useLocalStorageState from 'use-local-storage-state'
 
-// Function to display the address in a readable format
 function displayAddress(address) {
  if(address) {
    return address.length > 10 ? address.slice(0, 4) + '....' + address.slice(-4) : address
@@ -12,11 +10,10 @@ function displayAddress(address) {
  return ''
 }
 
-// Component to display wallet information
 export default function WalletInfo() {
- // Fetching wallet account data using SWR
+
  const { data: walletAccount, mutate: walletAccountMutate } = useSWR('walletAccount', aleoFetcher)
- // Getting user info from local storage
+
  const [ userInfo, setUserInfo ] = useLocalStorageState('userinfo')
 
  // Returning the JSX for the component

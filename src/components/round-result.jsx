@@ -14,9 +14,6 @@ export default function RoundResult({ onClose }) {
   const { data: roundResult, mutate: roundResultMutate } = useSWR('local:roundResult', stateFetcher)
   const { data: roundWinner, mutate: roundWinnerMutate } = useSWR('local:roundWinner', stateFetcher)
 
-  // const gameServer = useCurrentGameRoom()
-  // const router = useRouter()
-
   if(roundResult?.isGameOver && roundResult?.records) {
     return (
       <FrameBox title={<div className='bg-[url("/title-gameover.png")] bg-no-repeat bg-top h-[260px] -translate-y-2/3'></div>} onClose={onClose} showClose={false}>

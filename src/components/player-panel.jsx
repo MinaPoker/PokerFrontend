@@ -12,9 +12,6 @@ export default function PlayerPanel() {
   const { data: gameUsers, mutate: gameUsersMutate } = useSWR('local:gameUsers', stateFetcher)
   const { data: gameCountdown, mutate: gameCountdownMutate } = useSWR('local:gameCountdown', stateFetcher)
   
-  // const currentUserLocation = gamePlayerInfo?.location
-
-  // const showPK = gameCountdown && gamePlayerInfo && gameCountdown.userId === gamePlayerInfo.userId
   const showPK = false
   const currentUserLocation = 0
 

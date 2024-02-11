@@ -5,8 +5,6 @@ import useLocalStorageState from 'use-local-storage-state'
 import { useState, useEffect } from 'react'
 import classNames from 'classnames'
 
-// Fetcher function for use with SWR to make POST requests
-
 async function fetcher(url) {
   if(url) {
     const payload = await (await fetch(url, {
@@ -18,7 +16,7 @@ async function fetcher(url) {
   return null
 }
 
-// Component to allow users to change their avatar
+
 export default function ChangeAvatar({ onClose }) {
   const [ user ] = useLocalStorageState('userinfo', { defaultValue: { id: -1 } })
 
@@ -26,7 +24,7 @@ export default function ChangeAvatar({ onClose }) {
   const { data: headList } = useSWR(user.token ? `http://162.219.87.221/api/user/headList?token=${user.token}` : '', fetcher)
   const [ selectPic, setSelectPic ] = useState(null)
 
-// Effect to set the selected picture based on user's current avatar
+
   useEffect(() => {
     if(userInfo?.data?.headPic) { setSelectPic(userInfo.data.headPic) }
   }, [ userInfo?.data?.headPic ])

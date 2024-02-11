@@ -2,9 +2,7 @@ import useSWR from 'swr'
 import stateFetcher from '@/fetcher/state'
 import { useGameData } from '@/hooks/useGameData';
 
-// Component to display game information
 export default function GameInfo() {
-  // Retrieves game data from a custom hook
   const { gameData } = useGameData();
   const { data: gameRoom, mutate: gameRoomMutate } = useSWR('local:gameRoom', stateFetcher)
   const { data: gameUsers, mutate: gameUsersMutate } = useSWR('local:gameUsers', stateFetcher)
@@ -19,7 +17,6 @@ export default function GameInfo() {
   const { data: roundWinner, mutate: roundWinnerMutate } = useSWR('local:roundWinner', stateFetcher)
   
   return (
-    // Outer container for game info
     <div className='absolute top-0 w-full font-bold text-gray-700 left-0 text-center'>
 
       <div className='betting-chips-container'>
@@ -31,7 +28,7 @@ export default function GameInfo() {
 
           {
             tabledChips?.reduce?.((t, { value }) => t + value, 0).toString().padStart(4, '0').split('').map((c, i) => {
-              // Each digit of the total chips is rendered here
+
               return <div key={`c_${i}`} className='chip-digit'>{c}</div>
             })
           }

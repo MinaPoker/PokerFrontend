@@ -4,7 +4,7 @@ import { useSpringRef, useTransition } from "@react-spring/web"
 import { useState, useEffect, useDeferredValue } from 'react'
 import useSWR from 'swr'
 
-// Avatar image set 
+
 const avatarSet = {}
 
 for (let i = 0; i <= 20; i++) {
@@ -18,21 +18,20 @@ for (let i = 0; i <= 20; i++) {
   )
 }
 
-// Avatar component
 export default function Avatar({
-  userId, // User ID
-  user, // User object
-  headPic = '', // Custom user headshot
-  dealer = false, // Whether this is the dealer
-  showCountdown = false, // Show countdown timer
+  userId, 
+  user, 
+  headPic = '', 
+  dealer = false, 
+  showCountdown = false,
   startTime = 1,
   endTime = 0,
-  hiascent = false, // Show Hiascent logo
-  showAuto = true, // Show robot icon for autoplay
+  hiascent = false, 
+  showAuto = true, 
   children,
 }) {
 
-  // Countdown timer
+
   const duration = endTime - startTime
   const [remain, setRemain] = useState(duration)
   const vvv = useDeferredValue(remain)
@@ -53,7 +52,6 @@ export default function Avatar({
   }, [vvv, showCountdown, duration, endTime, startTime])
 
   return (
-    // Avatar container
     <div data-user-id={userId} className='relative top-6 -translate-x-1/2 -translate-y-1/2 w-24 h-24 box-content p-0.5 border-2 border-black/80 bg-[rgb(50,50,50)] rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,.2),0_0_16px_rgba(0,0,0,.8)]'>
 
      // Countdown circle
@@ -69,10 +67,10 @@ export default function Avatar({
      // Auto play icon
       {user?.isAutoBet && showAuto && <img className='absolute -left-2 -top-2 w-8 h-auto' src='/avatar-robot.png' />}
 
-     // Dealer icon
+
       {dealer && <img className='absolute -right-2 -top-2' src='/dealer-icon.png' />}
 
-     // Hiascent logo
+
       {hiascent && <img className='absolute top-0 left-0' src='hiascent.png' />}
 
       {children}

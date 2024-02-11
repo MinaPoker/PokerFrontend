@@ -2,16 +2,14 @@ import useSWR from 'swr';
 import stateFetcher from '@/fetcher/state';
 
 export default function GlobalTips() {
-  // Fetch game messages using SWR (stale-while-revalidate) for data fetching
   const { data: gameMessages, mutate: gameMessagesMutate } = useSWR('local:gameMessages', stateFetcher);
 
   return (
     <div className='fixed right-4 top-4 flex flex-col gap-2'>
-      {/* Map through game messages and display each as a tip */}
+
       {gameMessages?.map((message, i) => {
         return (
           <Tips key={`tip_${i}`} message={message} onClose={() => {
-            // Remove message from the list on close
             const messages = [...gameMessages];
             messages.splice(i, 1);
             stateFetcher('local:gameMessages', messages).then(gameMessagesMutate);
