@@ -27,8 +27,7 @@ const Contacts = ({ contacts, currentUsers, changeChat }) => {
       {currentUserImage && currentUserName && (
         <div className="grid grid-rows-[10%, 75%, 15%] gap-4 overflow-hidden bg-[#080420]">
           <div className="flex items-center gap-4 justify-center">
-            <img src={logo} alt="logo" className="h-8" />
-            <h3 className="text-white upercase">MinaPoker</h3>
+
           </div>
           <div
             className=" flex flex-col items-center overflow-auto gap-3 scrollbar-thin scrollbar-thumb-gray-500 

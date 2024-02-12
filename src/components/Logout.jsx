@@ -2,7 +2,7 @@ import React from 'react'
 import {BiPowerOff} from "react-icons/bi"
 import axios from "axios";
 import { useRouter } from 'next/navigation'
-import { logoutRoute } from '@/utils/APIRoutes';
+import { logoutRoute } from '../util/APIRoutes';
 
 
 const Logout = () => {

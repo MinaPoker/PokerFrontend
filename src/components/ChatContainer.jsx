@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Logout from "./Logout";
 import ChatInput from "./ChatInput";
 import axios from "axios";
-import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
+import { sendMessageRoute, recieveMessageRoute } from "../util/APIRoutes";
 import {v4 as uuidv4} from "uuid"
 
 const ChatContainer = ({ currentChat, curentUser, socket }) => {

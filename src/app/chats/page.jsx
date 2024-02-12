@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { allUserRoute, host } from "@/utils/APIRoutes";
+import { allUserRoute, host } from "../../util/APIRoutes";
 import { useRouter } from "next/navigation";
 import Contacts from "@/components/Contacts";
 import Welcome from "@/components/Welcome";

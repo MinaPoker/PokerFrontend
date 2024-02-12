@@ -48,4 +48,21 @@ io.on("connection", (socket) => {
       socket.to(sendUserSocket).emit("msg-recieve", data.msg);
     }
   });
+
+  socket.on("join-room", ({roomId, username}) =>{
+    socket.join(roomId);
+    io.to(roomId).emit("chat-message",{
+      username: 'System',
+      message: `${username} joined the room`,
+    });
+  });
+
+  socket.on("chat-message",({roomId, username, message})=>{
+    io.to(roomId).emit("chatMessage", { username, message });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+  
 });
