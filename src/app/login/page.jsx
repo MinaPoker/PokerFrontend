@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Logo from "@/images/logo.svg"; // Adjust the path to your logo SVG
 import Image from "next/image";
 import axios from "axios";
-import { loginRoute } from "@/utils/APIRoutes";
+import { loginRoute } from "@/util/APIRoutes";
 import { useRouter } from "next/navigation";
 
 // Move toast options outside the component function
