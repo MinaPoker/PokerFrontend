@@ -6,7 +6,7 @@ const Welcome = ({ currentUsers }) => {
 const [userName, setUserName] = useState("");
  const setUserNameFromLocalStorage = async () => {
    const userData = await JSON.parse(
-     localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+     localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
    );
    setUserName(userData.username);
  };

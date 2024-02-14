@@ -26,7 +26,7 @@ const Register = () => {
     username: "",
   });
   const checkLocalStorage = () => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)) {
       // router.push("/");
     }
   };
@@ -96,7 +96,7 @@ const Register = () => {
           process.env.NEXT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-        router.push("/setAvatar");
+        router.push("/chats");
       }
     }
   };

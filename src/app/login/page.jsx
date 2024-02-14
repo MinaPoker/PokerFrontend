@@ -29,8 +29,9 @@ const Login = () => {
     draggable: true,
   };
   const checkLocalStorageAndRedirect = () => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      // router.push("/");
+    if (localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)) {
+      console.log("local storage exists, redirecting to ma");
+      router.push("/");
     }
   };
 
@@ -91,6 +92,7 @@ const Login = () => {
         toast.error(data.msg, toastOptions);
       }
       if (data.status === true) {
+        console.log("data status is true", data.user)
         localStorage.setItem(
           process.env.NEXT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)

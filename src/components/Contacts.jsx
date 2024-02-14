@@ -8,7 +8,7 @@ const Contacts = ({ contacts, currentUsers, changeChat }) => {
   const [currentSelected, setCurrentSelected] = useState(undefined);
   const setCurrentUserData = async () => {
     const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
     );
     setCurrentUserName(data.username);
     setCurrentUserImage(data.avatarImage);

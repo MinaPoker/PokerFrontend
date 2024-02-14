@@ -12,7 +12,7 @@ const ChatContainer = ({ currentChat, curentUser, socket }) => {
 
   const fetchMessagesForCurrentChat = async () => {
     const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
     );
     const response = await axios.post(recieveMessageRoute, {
       from: data._id,
@@ -30,7 +30,7 @@ const ChatContainer = ({ currentChat, curentUser, socket }) => {
   const retrieveCurrentUserId = async () => {
     if (currentChat) {
       const userId = await JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+        localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
       )._id;
 
     }
@@ -43,7 +43,7 @@ const ChatContainer = ({ currentChat, curentUser, socket }) => {
 
   const handleSendMsg = async (msg) => {
     const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
     );
     socket.current.emit("send-msg", {
       to: currentChat._id,

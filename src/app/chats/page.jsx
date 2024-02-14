@@ -54,7 +54,7 @@ const Chats = () => {
           console.error("Error fetching data:", error);
         }
       } else {
-        router.push("/setAvatar");
+        router.push("/chats");
       }
     }
   };
