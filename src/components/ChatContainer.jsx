@@ -3,7 +3,7 @@ import Logout from "./Logout";
 import ChatInput from "./ChatInput";
 import axios from "axios";
 import { sendMessageRoute, recieveMessageRoute } from "../util/APIRoutes";
-import {v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
 
 const ChatContainer = ({ currentChat, curentUser, socket }) => {
   const [messages, setMessages] = useState([]);
@@ -61,33 +61,33 @@ const ChatContainer = ({ currentChat, curentUser, socket }) => {
     setMessages(msgs);
   };
 
-   const setupSocketEventListeners = () => {
-     if (socket.current) {
-       socket.current.on("msg-recieve", (msg) => {
-         setArrivalMessage({ fromSelf: false, message: msg });
-       });
-     }
-   };
+  const setupSocketEventListeners = () => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (msg) => {
+        setArrivalMessage({ fromSelf: false, message: msg });
+      });
+    }
+  };
 
-   const updateMessagesOnArrival = () => {
-     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
-   };
+  const updateMessagesOnArrival = () => {
+    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+  };
 
-   const scrollIntoViewOnMessagesChange = () => {
-     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-   };
+  const scrollIntoViewOnMessagesChange = () => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-   useEffect(() => {
-     setupSocketEventListeners();
-   }, []);
+  useEffect(() => {
+    setupSocketEventListeners();
+  }, []);
 
-   useEffect(() => {
-     updateMessagesOnArrival();
-   }, [arrivalMessage]);
+  useEffect(() => {
+    updateMessagesOnArrival();
+  }, [arrivalMessage]);
 
-   useEffect(() => {
-     scrollIntoViewOnMessagesChange();
-   }, [messages]);
+  useEffect(() => {
+    scrollIntoViewOnMessagesChange();
+  }, [messages]);
 
   return (
     <>
@@ -114,16 +114,14 @@ const ChatContainer = ({ currentChat, curentUser, socket }) => {
               return (
                 <div ref={scrollRef} key={uuidv4()}>
                   <div
-                    className={`flex items-center ${
-                      message.fromSelf ? " justify-end" : "justify-start"
-                    }`}
+                    className={`flex items-center ${message.fromSelf ? " justify-end" : "justify-start"
+                      }`}
                   >
                     <div
-                      className={`content ${
-                        message.fromSelf
+                      className={`content ${message.fromSelf
                           ? "bg-purple-500 bg-opacity-25"
                           : "bg-indigo-500 bg-opacity-25"
-                      }`}
+                        }`}
                     >
                       <div className=" w-max-[40%] break-words p-4 text-2xl rounded-2xl text-[#d1d1d1]">
                         <p>{message.message}</p>

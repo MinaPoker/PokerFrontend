@@ -3,19 +3,19 @@ import Robot from "@/images/robot.gif";
 import Image from "next/image";
 
 const Welcome = ({ currentUsers }) => {
-const [userName, setUserName] = useState("");
- const setUserNameFromLocalStorage = async () => {
-   const userData = await JSON.parse(
-     localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
-   );
-   setUserName(userData.username);
- };
+  const [userName, setUserName] = useState("");
+  const setUserNameFromLocalStorage = async () => {
+    const userData = await JSON.parse(
+      localStorage.getItem(process.env.NEXT_PUBLIC_LOCALHOST_KEY)
+    );
+    setUserName(userData.username);
+  };
 
- useEffect(() => {
-   setUserNameFromLocalStorage();
- }, []);
+  useEffect(() => {
+    setUserNameFromLocalStorage();
+  }, []);
 
-return (
+  return (
     <div className="flex items-center justify-center flex-col text-white">
       <Image src={Robot} alt="Robot" className=" h-[50%]" />
       <h1 className="text-2xl font-bold">
