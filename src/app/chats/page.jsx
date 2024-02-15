@@ -73,7 +73,6 @@ const Chats = () => {
         <div className="md:col-span-1 bg-[#0000076]">
           <Contacts contacts={contacts} changeChat={handleChatChange} />
         </div>
-
         <div className="md:col-span-3 bg-gray-500">
           {currentChat === undefined ? (
             <Welcome />
