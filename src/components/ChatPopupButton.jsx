@@ -1,18 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import StyledButton from '@/components/styled-button'
 import { AiFillWechat } from "react-icons/ai";
 import { BsChatDotsFill } from "react-icons/bs";
-import { a } from '@react-spring/web';
-
-
-// import ChatContainer from './ChatContainer';
+import ChatContainer from './ChatContainer';
+import { io } from "socket.io-client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const ChatPopup = () => {
+  const socket = useRef();
+  const router = useRouter();
+  const [contacts, setContacts] = useState([]);
+  const [currentChat, setCurrentChat] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState(undefined);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
+
+  const connectSocketIfUserExists = () => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser._id);
+    }
+  };
+
+  const fetchData = async () => {
+    if (currentUser) {
+      if (currentUser.isAvatarImageSet) {
+        try {
+          const response = await axios.get(
+            `${allUserRoute}/${currentUser._id}`
+          );
+          setContacts(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      } else {
+        router.push("/chats");
+      }
+    }
+  };
+
+
+  useEffect(() => {
+    connectSocketIfUserExists();
+  }, [currentUser]);
 
   return (
     <div className="fixed bottom-5 right-1 ">
@@ -30,7 +65,7 @@ const ChatPopup = () => {
             </button>
         )}
       </button>
-      {isOpen && alert('Chatbox is opened')}
+      {isOpen &&  <ChatContainer />}
     </div>
   );
 };
