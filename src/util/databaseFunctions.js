@@ -35,11 +35,13 @@ export const addPlayerData = async (address, userType, formData) => {
             .from('user_data')
             .insert([
                 {
-                    walletId: address,
-                    userType: userType,
+                    address: address,
                     name: formData.name,
-                    social: formData.twitter,
+                    social: formData.social,
+                    inviteCode: formData.inviteCode,
+                    walletBalance: 0,
                     status: "true",
+                    userType: userType,
                 },
             ])
             .select()
@@ -56,16 +58,18 @@ export const addPlayerData = async (address, userType, formData) => {
 }
 
 
-export const createPokerGame = async (address, userType, formData) => {
+export const createPokerGame = async (address, formData) => {
     try {
+        console.log("game data database page ", formData)
         const { data, error } = await supabase
             .from('create_game')
             .insert([
                 {
+                    gameId: formData.gameId,
                     creatorWallet: address,
-                    noOfPlayers: formData.noOfPlayers,
+                    noOfPlayers: formData.size,
                     lowBetChips: formData.lowBetChips,
-                    highBetChips: formData.highBetChips,
+                    highBetChips: formData.topBetChips,
                     totalRounds: formData.totalRounds,
                 },
             ])

@@ -13,39 +13,99 @@ import aleoFetcher from '@/fetcher/aleo'
 import { encodeBs58 } from '@/util'
 import ShareLink from '@/components/share-link'
 import { useGameData } from '@/hooks/useGameData'
+import { createPokerGame } from '@/util/databaseFunctions'
+import { generateUniquePokerId } from '@/util'
+import { atom, useAtom } from 'jotai'
+import { walletAddressAtom, gameIdAtom } from "@/util/state";
+import { toast } from 'react-toastify'
+import { io } from "socket.io-client";
 
 
 export default function CreateGamePage() {
 
     const router = useRouter()
     const { gameData, setGameData } = useGameData();
+    const socketRef = useRef();
+
+    // useEffect(() => {
+    //     // Connect to the Socket.IO server
+    //     socketRef.current = io('http://localhost:3000/api/socket', { path: "/api/socketio" });
+    //     console.log("socketRef.current working", socketRef.current)
+    //     // Event listener for receiving invites
+    //     socketRef.current.on('invitePlayer', (data) => {
+    //         console.log('Received game invite:', data);
+    //         // Handle invitation logic (display, accept, reject, etc.)
+    //     });
+
+    //     return () => socketRef.current.disconnect();
+    // }, []);
+
+    // const socket = io({ path: "/api/socketio" });
+
+    // socket.on("connect", () => {
+    //     console.log("Connected to the server");
+    // });
+
+    useEffect(() => {
+        const socket = io('http://localhost:5005', { path: '/api/socketio' });
+
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
+    // Function to send an invite
+    const sendInvite = (playerBId, gameId) => {
+        console.log("socketRef.current", playerBId, gameId)
+        socketRef.current.emit('invitePlayer', { playerBId, gameId });
+    };
+
 
     const [minimum, setMinimum] = useState(2)
     const [lowBetChips, setLowBetChips] = useState(2)
     const [topBetChips, setTopBetChips] = useState(20)
     const [totalRounds, setTotalRounds] = useState(2)
-    const [gameId, setGameId] = useState('abcd1234')
+    const [gameId, setGameId] = useAtom(gameIdAtom)
+    const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
 
     const [handleSubmitState, setHandleSubmitState] = useState(false)
     const [coLoading, setCoLoading] = useState(false);
 
     const handleCreateGame = async () => {
+        const newId = generateUniquePokerId();
+        console.log("newId", newId)
         setCoLoading(true);
-        console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId);
-
+        setGameId(newId)
+        console.log("input data", minimum, lowBetChips, topBetChips, totalRounds, gameId, newId);
         // setGameData(newGameData);
+        // sendInvite('as34512532', newId)
+
         setGameData({
+            gameId: newId,
             size: minimum,
             lowBetChips: lowBetChips,
             topBetChips: topBetChips,
             totalRounds: totalRounds,
-            gameId: 'abcd1234',
         });
 
         // Simulate a delay (e.g., 1 second) to mimic an API call.
         setTimeout(() => {
             setCoLoading(false);
-            setHandleSubmitState(true);
+            if (walletAddress) {
+                setHandleSubmitState(true);
+                createPokerGame(walletAddress, gameData);
+            }
+            else {
+                toast.error('Wallet is not connected', {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
+
             console.log('Create a game on-chain (simulated)');
         }, 2000);
     };
@@ -135,7 +195,7 @@ export default function CreateGamePage() {
                             <div className='w-40 h-40 bg-no-repeat bg-center bg-[url("/loading-icon-fg.png")] animate-[spin_1.6s_linear_infinite]'></div>
                         </div>
                         <p className='text-2xl font-black my-8'>Data cochain ...</p>
-                        <p>It is expected to take 4-5 minutes,</p>
+                        <p>It is expected to take 10 seconds,</p>
                         <p>please be patient!</p>
                         <StyledButton className='bg-[#ff9000] m-8' roundedStyle='rounded-full' onClick={() => { setCoLoading(false) }}>
                             <div className='text-2xl'>CANCEL</div>

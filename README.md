@@ -26,6 +26,8 @@ MinaPoker represents a groundbreaking approach in the online poker industry, mer
 ### Backend (NodeJS)
 - **Blockchain Communication**: Facilitates interaction between the frontend and the MINA blockchain.
 - **Session Management**: Manages user sessions for seamless transitions across the platform.
+- **Supabase Integration**: Integrated remote backend server for game data and user autherciation 
+- **Socket.io** Server setup for multi-player gaming
 
 ### Smart Contracts (zk-Proofs with o1js)
 - **Game Logic**: Implements the core poker game rules and mechanics, deploying these on the MINA blockchain for decentralized execution.

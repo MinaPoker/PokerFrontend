@@ -40,3 +40,35 @@ export function useGameData() {
         setGameData,
     };
 }
+
+// custom hook for managing wallet address
+export function useWalletAddress() {
+    const [walletAddress, setWalletAddress] = useState(['']);
+
+    // useEffect hook to load wallet address from local storage when the component mounts
+    useEffect(() => {
+        const storedWalletAddress = localStorage.getItem('walletAddress');
+        if (storedWalletAddress) {
+            setWalletAddress(JSON.parse(storedWalletAddress));
+            console.log('Wallet address loaded from local storage 2', JSON.parse(storedWalletAddress));
+        }
+    }, []); // Empty dependency array to ensure this effect runs only once on mount
+
+    // useEffect hook to save wallet address to local storage when it changes
+    useEffect(() => {
+        // Check if the address is not empty to avoid saving default/empty values
+        if (walletAddress[0] !== '') {
+            localStorage.setItem('walletAddress', JSON.stringify(walletAddress));
+            console.log('Wallet address saved to local storage 1', walletAddress);
+        }
+
+        // Dummy state update to ensure the latest state is always used - may not be necessary
+        setWalletAddress(prevWalletAddress => prevWalletAddress);
+    }, [walletAddress]); // Dependency on walletAddress to trigger effect when it changes
+
+    // Return the wallet address state and its setter function
+    return {
+        walletAddress,
+        setWalletAddress,
+    };
+}

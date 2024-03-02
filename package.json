@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:socket": "node server.js",
+    "start:socket": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -20,15 +22,21 @@
     "@tailwindcss/typography": "latest",
     "bs58": "^5.0.0",
     "classnames": "^2.3.2",
+    "express": "^4.18.2",
+    "jotai": "^2.6.5",
     "next": "^14.0.3",
     "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-toastify": "^10.0.4",
     "request": "^2.88.2",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4",
     "swr": "^2.2.4",
-    "use-local-storage-state": "^19.1.0"
+    "use-local-storage-state": "^19.1.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

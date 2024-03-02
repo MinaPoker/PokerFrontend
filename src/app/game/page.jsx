@@ -24,7 +24,7 @@ export default function GamePage() {
   console.log("gameData on game page:", gameData);
   // Log the game data
 
-  if (!gameId || !/^[a-f\d]{8}$/i.test(gameId)) {
+  if (!gameId || !/^poker[a-z\d]{15}$/i.test(gameId)) {
     // Validate gameId format
     
     return <div className='text-white'>Illegal Room Number {gameId}</div>;

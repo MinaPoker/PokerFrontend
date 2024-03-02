@@ -18,9 +18,15 @@ import aleoFetcher from '@/fetcher/aleo'
 import { encodeBs58 } from '@/util'
 import GameInfo from '@/components/game-info'
 import { useGameData } from '@/hooks/useGameData';
+import { atom, useAtom } from 'jotai'
+import { walletAddressAtom,gameIdAtom } from "@/util/state";
 
 export default function GameRoom({ gameId }) {
+  const [walletAddress, setWalletAddress] = useAtom(walletAddressAtom);
+  const [id, setId] = useAtom(gameIdAtom);
+  console.log("id", id)
   const [userInfo, setUserInfo] = useLocalStorageState('userinfo')
+  console.log("user info",userInfo)
   const { gameData } = useGameData();
   console.log("gameData on room:", gameData);
 

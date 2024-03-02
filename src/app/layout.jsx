@@ -1,5 +1,7 @@
 // Importing global CSS styles to ensure consistent styling across the application
 import '@/styles/global.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Metadata object defining essential details of the application for better SEO and user understanding
 export const metadata = {
@@ -19,6 +21,8 @@ export default function RootLayout({
              The body is styled with a full cover background image,
              providing a visually appealing base for the application's content. */}
         {children}
+        <ToastContainer />
+
       </body>
     </html>
   )
