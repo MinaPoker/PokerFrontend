@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { RxCross2 } from "react-icons/rx";
 
-// ShareLink component - used for sharing a match link
 export default function AddFundPopUp({ openHandler, balance, setBalance }) {
     const router = useRouter()
     const [amount, setAmount] = useState(0);
@@ -14,6 +13,7 @@ export default function AddFundPopUp({ openHandler, balance, setBalance }) {
     };
 
     const ISSERVER = typeof window === "undefined";git 
+    
     const [tokenAmount, setTokenAmount] = useState(0);
 
     useEffect(() => {
@@ -37,7 +37,6 @@ export default function AddFundPopUp({ openHandler, balance, setBalance }) {
 
     return (
         <div className="bg-[url('/dialog-background.png')] bg-cover bg-center h-[96px] -translate-y-1/2 relative">
-            {/* Use absolute positioning for the close button */}
             <button className="absolute top-3 right-3 text-white" onClick={openHandler}>
                 <RxCross2 />
             </button>
@@ -51,7 +50,6 @@ export default function AddFundPopUp({ openHandler, balance, setBalance }) {
                         <img src="/chips-blank-1.png" data-value="10" />
                         <p className="text-base">$ 10</p>
                     </button>
-                    {/* ... other buttons */}
                 </section>
 
                 <div className='flex bg-black/20 justify-between items-center text-white font-semibold rounded-lg p-2'>
@@ -69,8 +67,6 @@ export default function AddFundPopUp({ openHandler, balance, setBalance }) {
                 </div>
 
                 <div className='mt-2 text-gray-200'>select tokens you want to buy</div>
-
-                {/* ...Dialog content for Success message. Adjust styling as needed with Tailwind  */}  
             </div>
         </div>
     )
