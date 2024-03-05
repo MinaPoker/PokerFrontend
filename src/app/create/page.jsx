@@ -14,7 +14,7 @@ import { encodeBs58 } from '@/util'
 import ShareLink from '@/components/share-link'
 import { useGameData } from '@/hooks/useGameData'
 import { createPokerGame } from '@/util/databaseFunctions'
-import { generateUniquePokerId } from '@/util'
+import  {generateUniquePokerId} from '@/util/generate'
 import { atom, useAtom } from 'jotai'
 import { walletAddressAtom, gameIdAtom } from "@/util/state";
 import { toast } from 'react-toastify'
@@ -105,6 +105,7 @@ export default function CreateGamePage() {
             setCoLoading(false);
             if (walletAddress) {
                 setHandleSubmitState(true);
+                console.log("delayed data", walletAddress, gameData);
                 createPokerGame(walletAddress, gameData);
             }
             else {

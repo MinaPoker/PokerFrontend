@@ -57,7 +57,6 @@ export const addPlayerData = async (address, userType, formData) => {
     }
 }
 
-
 export const createPokerGame = async (address, formData) => {
     try {
         console.log("game data database page ", formData)
@@ -85,7 +84,6 @@ export const createPokerGame = async (address, formData) => {
         console.error('error:', error);
     }
 }
-
 
 // adding 1 user at time to the particular game on Mina Poker
 export const addPlayerToGame = async (gameId, address, userAddress) => {
