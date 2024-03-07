@@ -44,7 +44,7 @@ export default function AddFundPopUp({ openHandler, balance, setBalance }) {
             showClose={true} // Option to hide the close button
         >
             <div className='w-[560px] m-10 text-center flex flex-col justify-center text-white' data-testid="add fund">
-                <h4 className='text-3xl font-black'>Add MPC Tokens to Your Fund</h4>
+                <h4 className='text-3xl font-black'>Add $MPC Tokens to Your Wallet</h4>
                 <p>Start your decentralized Game </p>
                 <section className='flex gap-8 w-fit mx-auto mt-4 mb-4'>
                     <button onClick={(event) => handleClick(event)}>

@@ -8,13 +8,13 @@ import ChangeAvatar from './change-avatar';
 import classNames from 'classnames';
 import AddFundPopUp from "@/components/AddToken";
 
-
 export default function NavigationToolbar() {
   // State to manage the current dialog
   const [dialog, setDialog] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [balance, setBalance] = useState(0);
   const [balancePop, setBalancePop] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const openHandler = () => {
     balanceChecker();
@@ -55,7 +55,7 @@ export default function NavigationToolbar() {
         <div>
           {balancePop ?
             <div className='cursor-pointer' onClick={() => { setDialog(<AddFundPopUp openHandler={openHandler} accounts={accounts} balance={balance} setBalance={setBalance} />) }}>
-              <img src={inGame ? '/nav-fund-icon-s.png' : '/nav-fund-icon.png'} />
+              <img src={inGame ? '/nav-fund.png' : '/nav-fund.png'} width={60} />
             </div>
             :
             <div>
