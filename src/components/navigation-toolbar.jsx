@@ -6,10 +6,26 @@ import ShareLink from './share-link';
 import GameRule from './gamerule';
 import ChangeAvatar from './change-avatar';
 import classNames from 'classnames';
+import AddFundPopUp from "@/components/AddToken";
+
 
 export default function NavigationToolbar() {
   // State to manage the current dialog
   const [dialog, setDialog] = useState(null);
+  const [accounts, setAccounts] = useState([]);
+  const [balance, setBalance] = useState(0);
+  const [balancePop, setBalancePop] = useState(false)
+
+  const openHandler = () => {
+    balanceChecker();
+    setOpen(false)
+  }
+
+  const balanceChecker = () => {
+    if (balance > 10) {
+      setBalancePop(true)
+    }
+  }
 
   // Get the current pathname to determine if the user is in-game
   const pathname = usePathname();
@@ -34,6 +50,18 @@ export default function NavigationToolbar() {
         {/* Another Game Rule Dialog Trigger */}
         <div className='cursor-pointer' onClick={() => { setDialog(<GameRule onClose={() => setDialog(null)} />) }}>
           <img src={inGame ? '/nav-gamerule-icon-s.png' : '/nav-gamerule-icon.png'} />
+        </div>
+        {/* ShareLink Dialog Trigger */}
+        <div>
+          {balancePop ?
+            <div className='cursor-pointer' onClick={() => { setDialog(<AddFundPopUp openHandler={openHandler} accounts={accounts} balance={balance} setBalance={setBalance} />) }}>
+              <img src={inGame ? '/nav-fund-icon-s.png' : '/nav-fund-icon.png'} />
+            </div>
+            :
+            <div>
+              <AddFundPopUp openHandler={openHandler} accounts={accounts} balance={balance} setBalance={setBalance} />
+            </div>
+          }
         </div>
       </div>
       {/* Render the current dialog */}

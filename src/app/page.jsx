@@ -76,8 +76,6 @@ const Home = () => {
     }
   }
 
-
-
   const handlePopupClose = () => {
     setProfile(true)
   }
