@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 
-import styles from "../../styles/Profile.module.css";
-import randomColor from "../../util/randomColor";
+import styles from "@/styles/Profile.module.css";
+import randomColor from "@/util/randomColor";
 
 export default function ProfilePage() {
     const router = useRouter();
