@@ -16,12 +16,9 @@ export default function ProfilePage() {
 
     console.log("address", address)
 
-    // getting wallet data from mantle chain explorer
-
-
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`https://explorer.testnet.mantle.xyz/api?module=account&action=tokenlist&address=${router.query.address}`);
+            const response = await fetch(`https://explorer.supabase.com/api?module=account&action=tokenlist&address=${router.query.address}`);
             const jsonData = await response.json();
             if (!response.ok) {
                 throw new Error("Network response was not ok");
