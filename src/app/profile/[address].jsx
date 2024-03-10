@@ -7,6 +7,15 @@ import Link from "next/link";
 import styles from "@/styles/Profile.module.css";
 import randomColor from "@/util/randomColor";
 
+
+const [randomColor1, randomColor2, randomColor3, randomColor4] = [
+    randomColor(),
+    randomColor(),
+    randomColor(),
+    randomColor(),
+];
+
+
 export default function ProfilePage() {
     const router = useRouter();
     // const [tab, setTab] = useState<"nfts" | "coins" | "listings" | "auctions">("nfts");
