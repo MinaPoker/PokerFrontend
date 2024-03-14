@@ -194,47 +194,6 @@ export default function ProfilePage() {
 
                 </div>
             </div>
-
-            {/* 
-        <div
-          className={`${tab === "listings" ? styles.activeTabContent : styles.tabContent
-            }`}
-        >
-          {loadingDirects ? (
-            <p>Loading...</p>
-          ) : directListings && directListings.length === 0 ? (
-            <p>Nothing for sale yet! Head to the sell tab to list an NFT.</p>
-          ) : (
-            directListings?.map((listing) => (
-              <ListingWrapper listing={listing} key={listing.id} />
-            ))
-          )}
-        </div> */}
-
-            {/* <div
-          className={`${tab === "auctions" ? styles.activeTabContent : styles.tabContent
-            }`}
-        >
-          {loadingAuctions ? (
-            <p>Loading...</p>
-          ) : auctionListings && auctionListings.length === 0 ? (
-            <p>Nothing for sale yet! Head to the sell tab to list an NFT.</p>
-          ) : (
-            auctionListings?.map((listing) => (
-              <ListingWrapper listing={listing} key={listing.id} />
-            ))
-          )}
-        </div> */}
-
-            {/* creating popup modal for listing nfts in wallet */}
-            {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-        <div className="modal text-black">
-          <div className="modal-box w-11/12 max-w-5xl">
-            <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-            <h3 className="text-lg font-bold">Congratulations random Internet user!</h3>
-            <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
-          </div>
-        </div> */}
         </div>
     );
 }
