@@ -13,7 +13,7 @@ import { walletAddressAtom } from "@/util/state";
 
 
 // ShareLink component - used for sharing a match link
-export default function CreateProfilePopUp({ onClose, link }) {
+export default function CreateProfilePopUp({ onClose, link , setAvatarPopup }) {
   const router = useRouter()
   const [url, setUrl] = useState(null)
   const [copyed, setCopyed] = useState(false)
@@ -41,7 +41,8 @@ export default function CreateProfilePopUp({ onClose, link }) {
     event.preventDefault();
     console.log("form data", formData)
     addPlayerData(walletAddress, userType, formData)
-    router.push("/create");
+    onClose()
+    setAvatarPopup(true)
   };
 
   // Main return method that renders the share link UI
