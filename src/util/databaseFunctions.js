@@ -142,7 +142,7 @@ export const getReward = async (address) => {
   }
 };
 
-export const addStreaks = async (streak) => {
+export const addStreaks = async (streak, address) => {
   try {
     const { data, error } = await supabase
       .from("user_data")
@@ -159,7 +159,7 @@ export const addStreaks = async (streak) => {
   }
 };
 
-export const getStreaks = async () => {
+export const getStreaks = async (address) => {
   try {
     const { data, error } = await supabase
       .from("user_data")
