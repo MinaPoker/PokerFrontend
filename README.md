@@ -1,5 +1,8 @@
 # Mina zkApp: Mina Poker
 
+## Go, whitelist your wallet address for beta access at:-minapoker.xyz/whitelist
+
+
 ## Overview
 
 MinaPoker represents a groundbreaking approach in the online poker industry, merging the thrill of poker with the robust security and anonymity offered by cryptocurrencies. This platform harnesses the power of blockchain technology to create a decentralized, transparent, and secure environment for poker enthusiasts worldwide.
