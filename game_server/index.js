@@ -156,7 +156,6 @@ io.on('connection', (socket) => {
     });
 
 
-
     socket.on('invitePlayer', (data) => {
         io.to(data.playerBId).emit('invitePlayer', {
             gameId: data.gameId,
